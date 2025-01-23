@@ -5,6 +5,8 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.NamedCommands;
+
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -14,8 +16,10 @@ import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+// import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.subsystems.Blinkies;
 import frc.robot.subsystems.GamePieceManipulator;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
@@ -31,9 +35,16 @@ public class RobotContainer
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   final         CommandXboxController driverXbox = new CommandXboxController(0);
+  // potential code for accessing buttons on an external button box
+  // final CommandGenericHID buttonBox = new CommandGenericHID(2);
+
   // The robot's subsystems and commands are defined here...
   public static GamePieceManipulator gpm;
-  
+   /* LED Lights */
+  public static Blinkies m_blinkies = new Blinkies();
+  /*  Lime Light Cameras */
+  public static LimeLight limeLight = new LimeLight();
+ 
   private final SwerveSubsystem       drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
                                                                                 "swerve/neo"));
 
@@ -82,7 +93,14 @@ public class RobotContainer
     // Configure the trigger bindings
     configureBindings();
     DriverStation.silenceJoystickConnectionWarning(true);
+
+    // Auto mode - Register Named Commands - needs to be at top of class
+    // for PathPlanner
     NamedCommands.registerCommand("test", Commands.print("I EXIST"));
+
+    gpm = new GamePieceManipulator();
+    CameraServer.startAutomaticCapture();
+
   }
 
   /**
@@ -139,6 +157,10 @@ public class RobotContainer
       driverXbox.back().whileTrue(Commands.none());
       driverXbox.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
       driverXbox.rightBumper().onTrue(Commands.none());
+      // Get inputs from the button box, something like:
+      // buttonBox.button(0).onTrue(Commands.none());
+      // or possibly
+      // if (buttonBox.getHID().getRawButton(buttonNum)) { do something ...}
     }
 
   }

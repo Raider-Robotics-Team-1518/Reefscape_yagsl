@@ -12,6 +12,16 @@ public class Utils {
         return hsl[0];
     }
 
+    public static float getSaturation(float r, float g, float b) {
+        float[] hsl = RgbToHsv(r, g, b);
+        return hsl[1];
+    }
+
+    public static float getValue(float r, float g, float b) {
+        float[] hsl = RgbToHsv(r, g, b);
+        return hsl[2];
+    }
+
     /**
      * Convert a RGB Color to it corresponding HSL values.
      * modified from https://gist.github.com/Yona-Appletree/0c4b58763f070ae8cdff7db583c82563

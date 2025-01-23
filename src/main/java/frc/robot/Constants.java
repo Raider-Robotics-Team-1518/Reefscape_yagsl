@@ -67,24 +67,46 @@ public final class Constants
       0, // level 3
       0  // level 4
     };
-    public static final double armAngle1 = 10 * PI_OVER_180; // nearly horizontal
-    public static final double armAngle23 = 30 * PI_OVER_180;
-    public static final double armAngle4 = 90 * PI_OVER_180; // vertical
+    // optimal angle to eject coral onto level 1
+    public static final double coralEjectAngleLevel1 = 10 * PI_OVER_180; // nearly horizontal
+    public static final double coralEjectAngleLevel23 = 30 * PI_OVER_180;
+    public static final double coralEjectAngleLevel4 = 90 * PI_OVER_180; // vertical
+    // optimal angle for ejecting algae into the processor
+    public static final double algaeEjectArmAngle = 20 * PI_OVER_180;
+    public static final double targetCoralIntakeAngle = 70 * PI_OVER_180;
+    public static final double targetAlgaeIntakeAngle = 20 * PI_OVER_180;
   }
 
   public static final class Tolerances {
     public static final double reefHeightTolerance = 1.0; // tolerance for height of the reef levels
-    public static final double armAngleTolerance = 0.1; // angle of coral manipulator arm
+    public static final double coralEjectAngleTolerance = 0.1; // angle of coral manipulator arm
+    public static final double coralIntakeAngleTolerance = 0.1;
+    public static final double algaeEjectAngleTolerance = 0.1;
+    public static final double algaeIntakeAngleTolerance = 0.1;
   }
 
   public static final class MotorSpeeds {
     public static final double elevatorPower = 0.25;
-    public static final double coralMotorSpeed = 0.5;
-    public static final double algaeMotorSpeed = 0.5;
+    // TODO: either intake or eject need to have negative values
+    public static final double coralEjectMotorSpeed = 0.5;
+    public static final double coralIntakeMotorSpeed = 0.25;
+    public static final double algaeEjectMotorSpeed = 0.5;
+    public static final double algaeIntakeMotorSpeed = 0.5;
   }
 
   public static final class Times {
-    public static final double coralMotorRunTime = 2.5;
+    public static final double coralEjectMotorRunTime = 2.5;
+    public static final double coralIntakeMotorRunTime = 4;
     public static final double algaeMotorRunTime = 2.5;
+  }
+
+  public static final class ColorValues {
+     // 95% value would be a very light version of any color
+    public static final float whiteValueMin = 95f;
+    // For HSL, define the min & max of HUE that is the target color
+    // see https://hslpicker.com/#ff6a00
+    public static final float whiteHueMin = 30.0f;
+    public static final float whiteHueMax = 80.0f;
+
   }
 }

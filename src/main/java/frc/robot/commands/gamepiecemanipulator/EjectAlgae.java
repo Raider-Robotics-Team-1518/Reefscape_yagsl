@@ -4,8 +4,6 @@
 
 /*
  * Class to eject the algae into the processor
- * 
- * NEEDS TO BE UPDATED TO SET THE ANGLE OF THE MECHANISM BEFORE RELEASING THE BALL
  */
 
  package frc.robot.commands.gamepiecemanipulator;
@@ -16,13 +14,16 @@ import frc.robot.Constants;
 import frc.robot.RobotContainer;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class ReleaseAlgae extends Command {
+public class EjectAlgae extends Command {
   private Timer timer;
   private boolean isDone = false;
+  private double current_angle = RobotContainer.gpm.getAlgaeArmPosition();
+  private double targetArmAngle = 30 * Constants.PI_OVER_180;
 
-  public ReleaseAlgae() {
+  public EjectAlgae(double targetArmAngle) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(RobotContainer.gpm);
+    this.targetArmAngle = targetArmAngle; // Constants.Reef.algaeArmAngle
   }
 
   // Called when the command is initially scheduled.
@@ -35,11 +36,22 @@ public class ReleaseAlgae extends Command {
   @Override
   public void execute() {
     timer.start();
-    RobotContainer.gpm.setAlgaeMotorSpeed(Constants.MotorSpeeds.algaeMotorSpeed);
-    if (timer.hasElapsed(Constants.Times.algaeMotorRunTime)) {
-      isDone = true;
-      isFinished();
+    current_angle = RobotContainer.gpm.getAlgaeArmPosition();
+    // Calculate power curve proportional
+    double armRotationPower = Math.abs(this.targetArmAngle - current_angle) / 100;
+    // Move arm up or down to target arm angle
+    if (Math.abs(this.targetArmAngle - current_angle) > Constants.Tolerances.algaeEjectAngleTolerance) {
+      double v_sign = Math.signum(this.targetArmAngle - current_angle);
+      RobotContainer.gpm.setAlgaeArmSpeed(v_sign * (armRotationPower));
+    } else {
+      RobotContainer.gpm.setAlgaeArmSpeed(0d);
+      RobotContainer.gpm.setAlgaeMotorSpeed(Constants.MotorSpeeds.algaeEjectMotorSpeed);
+      if (timer.hasElapsed(Constants.Times.algaeMotorRunTime)) {
+        isDone = true;
+        isFinished();
+      }
     }
+
 
   }
 
