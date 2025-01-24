@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import com.ctre.phoenix6.hardware.TalonFX;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
@@ -57,6 +59,25 @@ public final class Constants
     public static final double LEFT_Y_DEADBAND = 0.1;
     public static final double RIGHT_X_DEADBAND = 0.1;
     public static final double TURN_CONSTANT    = 6;
+  }
+
+  public static class Motors {
+    public static final int elevatorMotorId = 0;
+    public static final int algaeArmMotorId = 1;
+    public static final int coralArmMotorId = 2;
+    public static final int coralMotorId = 3;
+    public static final int algaeMotorId = 4;
+  }
+
+  public static class Limits {
+    public static final double elevatorMax = 100;
+    public static final double elevatorMin = 0;
+  }
+
+  public static class Factors {
+    public static final double elevatorInchesPerRevolution = 1;
+    public static final double coralArmDegreesPerRevolution = 360;
+    public static final double algaeArmDegreesPerRevolution = 360;
   }
 
   public static class Reef {
