@@ -72,6 +72,8 @@ public final class Constants
   public static class Limits {
     public static final double elevatorMax = 100;
     public static final double elevatorMin = 0;
+    public static final double wristMinAngle = 0;
+    public static final double wristMaxAngle = 180;
   }
 
   public static class Factors {

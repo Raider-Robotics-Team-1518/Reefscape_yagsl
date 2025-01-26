@@ -24,7 +24,6 @@ public class GamePieceManipulator extends SubsystemBase {
   private TalonFX coralMotor;
   private double elevatorPosition = 0;
   private double coralArmPosition = 0;
-  private double algaeArmPosition = 0;
 
   
   public GamePieceManipulator() {
@@ -35,15 +34,11 @@ public class GamePieceManipulator extends SubsystemBase {
 
   public void driveElevator(double speed) {
     // TODO: this is probably not correct even if we do use a TalonFX
-    elevatorPosition = elevatorMotor.getPosition().getValueAsDouble();
-    if((elevatorPosition >= Constants.Limits.elevatorMax) && (Math.signum(speed) < 0)) {
+    elevatorPosition = getCurrentHeight();
+    if (elevatorPosition > Constants.Limits.elevatorMin && elevatorPosition < Constants.Limits.elevatorMax) {
       elevatorMotor.set(speed);
     } else {
-      if((elevatorPosition <= Constants.Limits.elevatorMin) && (Math.signum(speed) > 0)) {
-        elevatorMotor.set(speed);
-      } else {
-          elevatorMotor.set(0.0);
-      }
+      elevatorMotor.set(0.0);
     }
   }
 
@@ -74,14 +69,17 @@ public class GamePieceManipulator extends SubsystemBase {
 
   public void setCoralMotorSpeed(double speed) {
     // positive for ejecting, negative for intaking
-    // TODO: account for angle limits to not overdrive
     coralMotor.set(speed);
   }
 
   public void setWristSpeed(double speed) {
     // positive for rotating towards a more vertical angle
-    // TODO: account for angle limits to not overdrive
-    wristMotor.set(speed);
+    double currentWristPosition = getWristPosition();
+    if (currentWristPosition > Constants.Limits.wristMinAngle && currentWristPosition < Constants.Limits.wristMaxAngle) {
+      wristMotor.set(speed);
+    } else {
+      wristMotor.set(0);
+    }
   }
 
   public double getCurrentHeight() {
