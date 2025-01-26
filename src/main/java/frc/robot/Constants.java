@@ -106,6 +106,7 @@ public final class Constants
     public static final double coralIntakeAngleTolerance = 0.1;
     public static final double algaeEjectAngleTolerance = 0.1;
     public static final double algaeIntakeAngleTolerance = 0.1;
+    public static final double minElevatorHeightTolerance = 0.1;
   }
 
   public static final class MotorSpeeds {
