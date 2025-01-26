@@ -20,10 +20,8 @@ public class GamePieceManipulator extends SubsystemBase {
   private final ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);
   // probably not going to all be TalonFXs
   private TalonFX elevatorMotor;
-  private TalonFX algaeArmMotor;
-  private TalonFX coralArmMotor;
+  private TalonFX wristMotor;
   private TalonFX coralMotor;
-  private TalonFX algaeMotor;
   private double elevatorPosition = 0;
   private double coralArmPosition = 0;
   private double algaeArmPosition = 0;
@@ -31,10 +29,8 @@ public class GamePieceManipulator extends SubsystemBase {
   
   public GamePieceManipulator() {
     elevatorMotor = new TalonFX(Constants.Motors.elevatorMotorId);
-    algaeArmMotor = new TalonFX(Constants.Motors.algaeArmMotorId);
-    coralArmMotor = new TalonFX(Constants.Motors.algaeArmMotorId);
+    wristMotor = new TalonFX(Constants.Motors.algaeArmMotorId);
     coralMotor = new TalonFX(Constants.Motors.coralMotorId);
-    algaeMotor = new TalonFX(Constants.Motors.algaeMotorId);
   }
 
   public void driveElevator(double speed) {
@@ -76,28 +72,16 @@ public class GamePieceManipulator extends SubsystemBase {
     }
   }
 
-  public void setAlgaeMotorSpeed(double speed) {
-    // positive for ejecting, negative for intaking
-    algaeMotor.set(speed);
-  }
-
-  public void setAlgaeArmSpeed(double speed) {
-    // positive for rotating towards a more vertical angle
-    // TODO: account for angle limits to not overdrive
-    algaeArmMotor.set(speed);
-
-  }
-
   public void setCoralMotorSpeed(double speed) {
     // positive for ejecting, negative for intaking
     // TODO: account for angle limits to not overdrive
     coralMotor.set(speed);
   }
 
-  public void setCoralArmSpeed(double speed) {
+  public void setWristSpeed(double speed) {
     // positive for rotating towards a more vertical angle
     // TODO: account for angle limits to not overdrive
-    coralArmMotor.set(speed);
+    wristMotor.set(speed);
   }
 
   public double getCurrentHeight() {
@@ -107,20 +91,12 @@ public class GamePieceManipulator extends SubsystemBase {
     return elevatorPosition * Constants.Factors.elevatorInchesPerRevolution;
 
   }
-  public double getCoralArmPosition() {
+  public double getWristPosition() {
     // get the angle of the coral arm/wrist/whatever we're going to call it
     // TODO: this is probably not correct even if we do use a TalonFX
-    coralArmPosition = coralArmMotor.getPosition().getValueAsDouble(); // rotations
+    coralArmPosition = wristMotor.getPosition().getValueAsDouble(); // rotations
     return coralArmPosition * Constants.Factors.coralArmDegreesPerRevolution; // degrees, but should it be radians?
   }
-
-  public double getAlgaeArmPosition() {
-    // get the angle of the algae arm/wrist/whatever we're going to call it
-    // TODO: this is probably not correct even if we do use a TalonFX
-    algaeArmPosition = algaeArmMotor.getPosition().getValueAsDouble(); // rotations
-    return algaeArmPosition * Constants.Factors.algaeArmDegreesPerRevolution; // degrees, but should it be radians?
-  }
-
 
   @Override
   public void periodic() {

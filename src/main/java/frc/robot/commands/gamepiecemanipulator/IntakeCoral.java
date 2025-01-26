@@ -13,7 +13,7 @@ import frc.robot.RobotContainer;
 public class IntakeCoral extends Command {
   private Timer timer;
   private boolean isDone = false;
-  private double current_angle = RobotContainer.gpm.getCoralArmPosition();
+  private double current_angle = RobotContainer.gpm.getWristPosition();
   private double targetIntakeAngle = 30 * Constants.PI_OVER_180;
 
   public IntakeCoral(double targetIntakeAngle) {
@@ -32,16 +32,16 @@ public class IntakeCoral extends Command {
   public void execute() {
     timer.start();
     // set arm to correct angle
-    current_angle = RobotContainer.gpm.getCoralArmPosition();
+    current_angle = RobotContainer.gpm.getWristPosition();
     // Calculate power curve proportional
     double armRotationPower = Math.abs(this.targetIntakeAngle - current_angle) / 100;
     // Move arm up or down to target arm angle
     if (Math.abs(this.targetIntakeAngle - current_angle) > Constants.Tolerances.coralIntakeAngleTolerance) {
       double v_sign = Math.signum(this.targetIntakeAngle - current_angle);
-      RobotContainer.gpm.setCoralArmSpeed(v_sign * (armRotationPower));
+      RobotContainer.gpm.setWristSpeed(v_sign * (armRotationPower));
     } else {
       // arm is in the correct angle
-      RobotContainer.gpm.setCoralArmSpeed(0d); // turn off arm motor
+      RobotContainer.gpm.setWristSpeed(0d); // turn off arm motor
       RobotContainer.gpm.setCoralMotorSpeed(Constants.MotorSpeeds.coralIntakeMotorSpeed); // turn on intake motor
       if (RobotContainer.gpm.isCoralLoaded() || timer.hasElapsed(Constants.Times.coralIntakeMotorRunTime)) {
         RobotContainer.gpm.setCoralMotorSpeed(0d);

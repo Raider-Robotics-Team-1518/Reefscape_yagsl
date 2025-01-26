@@ -16,7 +16,7 @@ import frc.robot.RobotContainer;
 public class EjectCoral extends Command {
   private Timer timer;
   private boolean isDone = false;
-  private double current_angle = RobotContainer.gpm.getCoralArmPosition();
+  private double current_angle = RobotContainer.gpm.getWristPosition();
   private double targetArmAngle = 30 * Constants.PI_OVER_180;
 
   public EjectCoral(double targetArmAngle) {
@@ -35,15 +35,15 @@ public class EjectCoral extends Command {
   public void execute() {
     timer.start();
     // set arm to correct angle
-    current_angle = RobotContainer.gpm.getCoralArmPosition();
+    current_angle = RobotContainer.gpm.getWristPosition();
     // Calculate power curve proportional
     double armRotationPower = Math.abs(this.targetArmAngle - current_angle) / 100;
     // Move arm up or down to target arm angle
     if (Math.abs(this.targetArmAngle - current_angle) > Constants.Tolerances.coralEjectAngleTolerance) {
       double v_sign = Math.signum(this.targetArmAngle - current_angle);
-      RobotContainer.gpm.setCoralArmSpeed(v_sign * (armRotationPower));
+      RobotContainer.gpm.setWristSpeed(v_sign * (armRotationPower));
     } else {
-      RobotContainer.gpm.setCoralArmSpeed(0d);
+      RobotContainer.gpm.setWristSpeed(0d);
       RobotContainer.gpm.setCoralMotorSpeed(Constants.MotorSpeeds.coralEjectMotorSpeed);
       if (timer.hasElapsed(Constants.Times.coralEjectMotorRunTime)) {
         isDone = true;

@@ -17,7 +17,7 @@ import frc.robot.RobotContainer;
 public class EjectAlgae extends Command {
   private Timer timer;
   private boolean isDone = false;
-  private double current_angle = RobotContainer.gpm.getAlgaeArmPosition();
+  private double current_angle = RobotContainer.gpm.getWristPosition();
   private double targetArmAngle = 30 * Constants.PI_OVER_180;
 
   public EjectAlgae(double targetArmAngle) {
@@ -36,16 +36,16 @@ public class EjectAlgae extends Command {
   @Override
   public void execute() {
     timer.start();
-    current_angle = RobotContainer.gpm.getAlgaeArmPosition();
+    current_angle = RobotContainer.gpm.getWristPosition();
     // Calculate power curve proportional
     double armRotationPower = Math.abs(this.targetArmAngle - current_angle) / 100;
     // Move arm up or down to target arm angle
     if (Math.abs(this.targetArmAngle - current_angle) > Constants.Tolerances.algaeEjectAngleTolerance) {
       double v_sign = Math.signum(this.targetArmAngle - current_angle);
-      RobotContainer.gpm.setAlgaeArmSpeed(v_sign * (armRotationPower));
+      RobotContainer.gpm.setWristSpeed(v_sign * (armRotationPower));
     } else {
-      RobotContainer.gpm.setAlgaeArmSpeed(0d);
-      RobotContainer.gpm.setAlgaeMotorSpeed(Constants.MotorSpeeds.algaeEjectMotorSpeed);
+      RobotContainer.gpm.setWristSpeed(0d);
+      RobotContainer.gpm.setCoralMotorSpeed(Constants.MotorSpeeds.algaeEjectMotorSpeed);
       if (timer.hasElapsed(Constants.Times.algaeMotorRunTime)) {
         isDone = true;
         isFinished();
@@ -59,7 +59,7 @@ public class EjectAlgae extends Command {
   @Override
   public void end(boolean interrupted) {
     timer.stop();
-    RobotContainer.gpm.setAlgaeMotorSpeed(0);
+    RobotContainer.gpm.setCoralMotorSpeed(0);
 
   }
 
