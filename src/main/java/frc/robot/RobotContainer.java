@@ -36,7 +36,7 @@ public class RobotContainer
   // Replace with CommandPS4Controller or CommandJoystick if needed
   final         CommandXboxController driverXbox = new CommandXboxController(0);
   // potential code for accessing buttons on an external button box
-  // final CommandGenericHID buttonBox = new CommandGenericHID(2);
+  // final CommandGenericHID buttonBox = new CommandGenericHID(1);
 
   // The robot's subsystems and commands are defined here...
   public static GamePieceManipulator gpm;
@@ -46,7 +46,7 @@ public class RobotContainer
   public static LimeLight limeLight = new LimeLight();
  
   private final SwerveSubsystem       drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
-                                                                                "swerve/neo"));
+                                                                                "swerve"));
 
   /**
    * Converts driver input into a field-relative ChassisSpeeds that is controlled by angular velocity.
@@ -90,16 +90,16 @@ public class RobotContainer
    */
   public RobotContainer()
   {
+    // Auto mode - Register Named Commands - needs to be at top of class
+    // for PathPlanner
+    NamedCommands.registerCommand("test", Commands.print("I EXIST"));
+    
     // Configure the trigger bindings
     configureBindings();
     DriverStation.silenceJoystickConnectionWarning(true);
 
-    // Auto mode - Register Named Commands - needs to be at top of class
-    // for PathPlanner
-    NamedCommands.registerCommand("test", Commands.print("I EXIST"));
-
     gpm = new GamePieceManipulator();
-    CameraServer.startAutomaticCapture();
+    // CameraServer.startAutomaticCapture();
 
   }
 
@@ -147,12 +147,13 @@ public class RobotContainer
       driverXbox.rightBumper().onTrue(Commands.none());
     } else
     {
+      // *** These are the bindings for live/teleop control of the bot **
       driverXbox.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
       driverXbox.x().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
-      // driverXbox.b().whileTrue(
-      //     drivebase.driveToPose(
-      //         new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))
-      //                         );
+      driverXbox.b().whileTrue(
+          drivebase.driveToPose(
+              new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))
+                              );
       driverXbox.start().whileTrue(Commands.none());
       driverXbox.back().whileTrue(Commands.none());
       driverXbox.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
