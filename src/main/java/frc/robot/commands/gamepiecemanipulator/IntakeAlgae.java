@@ -13,7 +13,7 @@ public class IntakeAlgae extends Command {
   private Timer timer;
   private boolean isDone = false;
   private double current_angle = RobotContainer.gpm.getWristPosition();
-  private double targetAlgaeIntakeAngle = 30 * Constants.PI_OVER_180;
+  private double targetAlgaeIntakeAngle = 30;
 
   public IntakeAlgae(double targetAlgaeIntakeAngle) {
     addRequirements(RobotContainer.gpm);

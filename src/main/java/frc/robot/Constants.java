@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import com.ctre.phoenix6.hardware.TalonFX;
-
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
@@ -25,16 +23,8 @@ public final class Constants
   public static final double ROBOT_MASS = (148 - 20.3) * 0.453592; // 32lbs * kg per pound
   public static final Matter CHASSIS    = new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
   public static final double LOOP_TIME  = 0.13; //s, 20ms + 110ms sprk max velocity lag
-  public static final double MAX_SPEED  = Units.feetToMeters(14.5);
   // Maximum speed of the robot in meters per second, used to limit acceleration.
-
-
-  /* Factors of PI */
-  public static final double PI_OVER_TWO = Math.PI * 0.5;
-  public static final double THREE_PI_OVER_TWO = 3 * PI_OVER_TWO;
-  public static final double TWO_PI = 2 * Math.PI;
-  public static final Rotation2d ROTATE_BY_PI = Rotation2d.fromDegrees(180);
-  public static final double PI_OVER_180 = Math.PI / 180;
+  public static final double MAX_SPEED  = Units.feetToMeters(14.5);
 
 
 //  public static final class AutonConstants
@@ -62,11 +52,9 @@ public final class Constants
   }
 
   public static class Motors {
-    public static final int elevatorMotorId = 0;
-    public static final int algaeArmMotorId = 1;
-    public static final int coralArmMotorId = 2;
-    public static final int coralMotorId = 3;
-    public static final int algaeMotorId = 4;
+    public static final int elevatorMotorId = 16;
+    public static final int wristMotorId = 17;
+    public static final int coralMotorId = 18;
   }
 
   public static class Limits {
@@ -78,26 +66,28 @@ public final class Constants
 
   public static class Factors {
     public static final double elevatorInchesPerRevolution = 1;
-    public static final double coralArmDegreesPerRevolution = 360;
-    public static final double algaeArmDegreesPerRevolution = 360;
+    public static final double wristDegreesPerRevolution = 360;
   }
 
   public static class Reef {
+    // Per Q&A system: "Keep in mind that dimensions on the REEF
+    // and other structures have a tolerance of +/- 1/2 in. to
+    // accommodate variances in manufacturing and assembly."
     public static final double[] levels = {
-      0, // ignore this one
-      0, // height of level 1 of the reef
-      0, // level 2
-      0, // level 3
-      0  // level 4
+      0,      // we ignore this level, leave at 0
+      18,     // height in inches of level 1 of the reef
+      31.875, // level 2
+      47.625, // level 3
+      72      // level 4
     };
-    // optimal angle to eject coral onto level 1
-    public static final double coralEjectAngleLevel1 = 10 * PI_OVER_180; // nearly horizontal
-    public static final double coralEjectAngleLevel23 = 30 * PI_OVER_180;
-    public static final double coralEjectAngleLevel4 = 90 * PI_OVER_180; // vertical
-    // optimal angle for ejecting algae into the processor
-    public static final double algaeEjectArmAngle = 20 * PI_OVER_180;
-    public static final double targetCoralIntakeAngle = 70 * PI_OVER_180;
-    public static final double targetAlgaeIntakeAngle = 20 * PI_OVER_180;
+    // optimal angle in degrees to eject coral onto level 1
+    public static final double coralEjectAngleLevel1 = 10; // nearly horizontal
+    public static final double coralEjectAngleLevel23 = 30;
+    public static final double coralEjectAngleLevel4 = 90; // vertical
+    // optimal angle in degrees for ejecting algae into the processor
+    public static final double algaeEjectArmAngle = 20;
+    public static final double targetCoralIntakeAngle = 70;
+    public static final double targetAlgaeIntakeAngle = 20;
   }
 
   public static final class Tolerances {
@@ -120,7 +110,7 @@ public final class Constants
 
   public static final class Times {
     public static final double coralEjectMotorRunTime = 2.5;
-    public static final double coralIntakeMotorRunTime = 4;
+    public static final double coralIntakeMotorRunTime = 10;
     public static final double algaeMotorRunTime = 2.5;
   }
 

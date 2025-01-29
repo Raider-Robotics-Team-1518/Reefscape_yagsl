@@ -17,7 +17,7 @@ public class EjectCoral extends Command {
   private Timer timer;
   private boolean isDone = false;
   private double current_angle = RobotContainer.gpm.getWristPosition();
-  private double targetArmAngle = 30 * Constants.PI_OVER_180;
+  private double targetArmAngle = 30;
 
   public EjectCoral(double targetArmAngle) {
     addRequirements(RobotContainer.gpm);

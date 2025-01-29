@@ -14,7 +14,7 @@ public class IntakeCoral extends Command {
   private Timer timer;
   private boolean isDone = false;
   private double current_angle = RobotContainer.gpm.getWristPosition();
-  private double targetIntakeAngle = 30 * Constants.PI_OVER_180;
+  private double targetIntakeAngle = 30;
 
   public IntakeCoral(double targetIntakeAngle) {
     addRequirements(RobotContainer.gpm);

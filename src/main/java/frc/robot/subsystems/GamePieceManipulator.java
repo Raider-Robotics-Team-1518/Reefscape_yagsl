@@ -28,8 +28,9 @@ public class GamePieceManipulator extends SubsystemBase {
   
   public GamePieceManipulator() {
     elevatorMotor = new TalonFX(Constants.Motors.elevatorMotorId);
-    wristMotor = new TalonFX(Constants.Motors.algaeArmMotorId);
+    wristMotor = new TalonFX(Constants.Motors.wristMotorId);
     coralMotor = new TalonFX(Constants.Motors.coralMotorId);
+    // TODO: reset the encoders to 0 here
   }
 
   public void driveElevator(double speed) {
@@ -93,7 +94,7 @@ public class GamePieceManipulator extends SubsystemBase {
     // get the angle of the coral arm/wrist/whatever we're going to call it
     // TODO: this is probably not correct even if we do use a TalonFX
     coralArmPosition = wristMotor.getPosition().getValueAsDouble(); // rotations
-    return coralArmPosition * Constants.Factors.coralArmDegreesPerRevolution; // degrees, but should it be radians?
+    return coralArmPosition * Constants.Factors.wristDegreesPerRevolution; // degrees, but should it be radians?
   }
 
   @Override
